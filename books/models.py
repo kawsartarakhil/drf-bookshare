@@ -8,34 +8,34 @@ class Category(models.Model):
         return self.name
 
 class Books(models.Model):
-    CONDTITON = [
+    CONDTITON = (
         ("new","New"),
         ("good","Good"),
         ("average","Averge"),
         ("poor","Poor")
-    ]
-    RATING = [
-        ("1"),
-        ("2"),
-        ("3"),
-        ("4"),
-        ("5"),
-    ]
-    STATUS = [
-        ("pending"),
-        ("returned"),
-        ("exchnaged")
-    ]
+    )
+    RATING = (
+        ("1","one star"),
+        ("2","two star"),
+        ("3","three star"),
+        ("4","four star"),
+        ("5","five star"),
+    )
+    STATUS = (
+        ("pending","pending"),
+        ("returned","retunrned"),
+        ("exchnaged","exchange")
+    )
     title = models.CharField(max_length=150)
     owner = models.ForeignKey(Customuser,on_delete=models.CASCADE)
     author = models.CharField(max_length=100)
     category = models.ForeignKey(Category,on_delete=models.CASCADE,related_name="books")
-    condition = models.Choices(choices=CONDTITON)
+    condition = models.CharField(choices=CONDTITON)
     city = models.CharField(max_length=100)
     descirption = models.TextField(null=True,blank=True)
     phone_number = models.CharField(max_length=15)
-    rating = models.Choices(choices=RATING)
-    status = models.Choices(choices=STATUS)
+    rating = models.CharField(choices=RATING)
+    status = models.CharField(choices=STATUS)
     def __str__(self):
         return self.title
 
