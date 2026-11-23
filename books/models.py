@@ -1,4 +1,5 @@
 from django.db import models
+from accounts.models import Customuser
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -21,11 +22,12 @@ class Books(models.Model):
         ("5"),
     ]
     STATUS = [
-        ("available"),
-        ("waiting for responce"),
+        ("pending"),
+        ("returned"),
         ("exchnaged")
     ]
     title = models.CharField(max_length=150)
+    owner = models.ForeignKey(Customuser,on_delete=models.CASCADE)
     author = models.CharField(max_length=100)
     category = models.ForeignKey(Category,on_delete=models.CASCADE,related_name="books")
     condition = models.Choices(choices=CONDTITON)
@@ -36,3 +38,12 @@ class Books(models.Model):
     status = models.Choices(choices=STATUS)
     def __str__(self):
         return self.title
+
+class Trade(models.Model):
+    user = models.ForeignKey(Customuser,on_delete=models.CASCADE)
+    book = models.ForeignKey(Books,on_delete=models.CASCADE)
+    traded_at = models.DateTimeField(auto_now_add=True)
+    finished_at = models.DateTimeField()
+
+    def __str__(self):
+        return f"{self.book} {self.traded_at}"
